@@ -40,7 +40,8 @@ router.get('/sensor/:sensor1/:sensor2/:sensor3', (req, res, next) => {
             global_msg_id, //msg.id
             'Pembacaan Sensor:: ${req.params.sensor1}, ${req.params.sensor2}, ${req.params.sensor3}
       )
-      res.json({
+      res.json(
+        {
         "status": 202,
         "messgae": "Success",
         "data": {
