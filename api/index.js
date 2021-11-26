@@ -10,12 +10,10 @@ const bot = new TelegramBot(token, {polling: true});
 
 let global_msg_id;
 // Main Menu Bot
-bot.onText(/\/start/, (msg) => {
-    global_msg_id = msg.chat.id;
-    bot.sendMessage(
-        global_msg_id,
-        `hello ${msg.chat.first_name}, welcome...\n
-        click /predict`
+bot.onText(/\/Start/, (msg) => {
+    bot.sendMessage(msg.chat.id, `Welcome, ${msg.chat.first_name}`, {
+    "reply_markup": {
+      "keyboard":[["/Assalamualaikum"],["/Bagaimana Kabar Cuaca"]]
     );
 });
 
