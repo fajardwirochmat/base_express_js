@@ -7,31 +7,26 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = '2138902673:AAF0mUnyP_0wdnLw0OK_Vdm6lnHZ2kh-yaQ';
 const bot = new TelegramBot(token, {polling: true});
 
+
 let global_msg_id;
-
 // Main Menu Bot
-bot.onText(/\/Start/, (msg) => {
-    bot.sendMessage(msg.chat.id, `Welcome, ${msg.chat.first_name}`, {
-    "reply_markup": {
-      "keyboard":[["/Assalamualaikum"],["/Bagaimana Kabar Cuaca"]]
-      }
-    });
-});
-
-bot.onText(/\/Assalamualaikum/, (msg) => {
+bot.onText(/\/start/, (msg) => {
     global_msg_id = msg.chat.id;
     bot.sendMessage(
         global_msg_id,
-        `Waalaikumsalam`
-        );
+        `Hello ${msg.chat.first_name}, welcome...\n
+        click /show_url`
+    );
 });
 
-bot.onText(/\/Bagaimana Kabar Cuaca/, (msg) => {
+bot.onText(/\/show_url/, (msg) => {
     global_msg_id = msg.chat.id;
     bot.sendMessage(
         global_msg_id,
-        `Alhamdulillah Cerah.`
-        );
+        `
+            https://radenesp-tele1.herokuapp.com/api/sensor
+        `
+    );
 });
 
 bot.on('message', (msg) => {
@@ -40,42 +35,32 @@ bot.on('message', (msg) => {
 
 
 /* GET users listing. */
-router.get('/', (req, res, next) => {
-  res.json({
-    "status": 202,
-    "message": "Success"
-  });
-});
-
-// https://esp-pbm12-41421110113.herokuapp.com/api/sensor/40/33/37
-router.get('/sensor/:sensor1/:sensor2/:sensor3', (req, res, next) => {
+// https://radenesp-tele1.herokuapp.com/api/sensor/125/50/300/23/34
+router.get('/sensor/:sensor1/:sensor2/:sensor3/:sensor4/:sensor5/', (req, res, next) => {
   try {
       bot.sendMessage(
             global_msg_id, //msg.id
-            `Pembacaan Sensor:: ${req.params.sensor1}, ${req.params.sensor2}, ${req.params.sensor3}`
+            `Pembacaan Data Sensor :\n 
+            Sensor 1 = ${req.params.sensor1}\n
+            Sensor 2 = ${req.params.sensor2}\n
+            Sensor 3 = ${req.params.sensor3}\n
+            Sensor 4 = ${req.params.sensor4}\n 
+            Sensor 5 = ${req.params.sensor5}`
      );
       res.json({
-        "status": 202,
+        "status": 100,
         "message": "Success",
         "data": {
-          "sensor_1": req.params.sensor1,
-          "sensor_2": req.params.sensor2,
-          "sensor_3": req.params.sensor3
+          "sensor_1": parseInt(req.params.sensor1),
+          "sensor_2": parseInt(req.params.sensor2),
+          "sensor_3": parseInt(req.params.sensor3),
+          "sensor_4": parseInt(req.params.sensor4),
+          "sensor_5": parseInt(req.params.sensor5)
         }
       });
   } catch (err) {
       next(err);
   }
 });
-
-// https://esp-pbm12-41421110113.herokuapp.com/api/msg/Percobaan_router_key
-router.get('/msg/:key', function(req, res, next){
-    bot.sendMessage(
-            global_msg_id, //msg.id
-            `${req.params.key}`
-    );
-    res.json(req.params.key);
-});
-
 
 module.exports = router;
