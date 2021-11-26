@@ -7,8 +7,8 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = '2140853258:AAF7AzKdd133wzQsRtGHc6KGpvi7sQZT_00';
 const bot = new TelegramBot(token, {polling: true});
 
-
 let global_msg_id;
+
 // Main Menu Bot
 bot.onText(/\/Start/, (msg) => {
     bot.sendMessage(msg.chat.id, `Welcome, ${msg.chat.first_name}`, {
@@ -43,26 +43,24 @@ bot.on('message', (msg) => {
 router.get('/', (req, res, next) => {
   res.json({
     "status": 202,
-    "messgae": "Success"
+    "message": "Success"
   });
 });
 
-
+// https://esp-pbm12-41421110113.herokuapp.com/api/sensor/40/33/37
 router.get('/sensor/:sensor1/:sensor2/:sensor3', (req, res, next) => {
   try {
-      bot.sendMessage
-      //(
-            //global_msg_id, //msg.id
-            //'Pembacaan Sensor:: ${req.params.sensor1}, ${req.params.sensor2}
-      //)
-      res.json(
-        {
+      bot.sendMessage(
+            global_msg_id, //msg.id
+            `Pembacaan Sensor:: ${req.params.sensor1}, ${req.params.sensor2}, ${req.params.sensor3}`
+     );
+      res.json({
         "status": 202,
-        "messgae": "Success",
+        "message": "Success",
         "data": {
           "sensor_1": req.params.sensor1,
           "sensor_2": req.params.sensor2,
-         //"sensor_3": req.params.sensor3
+          "sensor_3": req.params.sensor3
         }
       });
   } catch (err) {
@@ -70,8 +68,8 @@ router.get('/sensor/:sensor1/:sensor2/:sensor3', (req, res, next) => {
   }
 });
 
-
-router.get('/test/:key', function(req, res, next){
+// https://esp-pbm12-41421110113.herokuapp.com/api/msg/Percobaan_router_key
+router.get('/msg/:key', function(req, res, next){
     bot.sendMessage(
             global_msg_id, //msg.id
             `${req.params.key}`
