@@ -35,7 +35,7 @@ bot.on('message', (msg) => {
 
 
 /* GET users listing. */
-// https://radenesp-tele1.herokuapp.com/api/sensor/125/50/300/23/34
+// https://trialcase1.herokuapp.com/api/sensor/
 router.get('/sensor/:sensor1/:sensor2/:sensor3/:sensor4/:sensor5/', (req, res, next) => {
   try {
       bot.sendMessage(
