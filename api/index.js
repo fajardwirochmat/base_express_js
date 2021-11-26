@@ -14,7 +14,24 @@ bot.onText(/\/Start/, (msg) => {
     bot.sendMessage(msg.chat.id, `Welcome, ${msg.chat.first_name}`, {
     "reply_markup": {
       "keyboard":[["/Assalamualaikum"],["/Bagaimana Kabar Cuaca"]]
-    );
+      }
+    });
+});
+
+bot.onText(/\/Assalamualaikum/, (msg) => {
+    global_msg_id = msg.chat.id;
+    bot.sendMessage(
+        global_msg_id,
+        `Waalaikumsalam`
+        );
+});
+
+bot.onText(/\/Bagaimana Kabar Cuaca/, (msg) => {
+    global_msg_id = msg.chat.id;
+    bot.sendMessage(
+        global_msg_id,
+        `Alhamdulillah Cerah.`
+        );
 });
 
 bot.on('message', (msg) => {
