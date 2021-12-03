@@ -11,22 +11,27 @@ const bot = new TelegramBot(token, {polling: true});
 let global_msg_id;
 // Main Menu Bot
 bot.onText(/\/start/, (msg) => {
-    global_msg_id = msg.chat.id;
-    bot.sendMessage(
-        global_msg_id,
-        `Hello ${msg.chat.first_name}, welcome...\n
-        click /show_url`
-    );
+    bot.sendMessage(msg.chat.id, `Welcome, ${msg.chat.first_name}`, {
+    "reply_markup": {
+      "keyboard":[["/Apa kabar?"],["/Mau apa hari ini?"]]
+      }
+    });
 });
 
-bot.onText(/\/show_url/, (msg) => {
+bot.onText(/\/Apa kabar?/, (msg) => {
     global_msg_id = msg.chat.id;
     bot.sendMessage(
         global_msg_id,
-        `
-            https://trialcase1.herokuapp.com/api/sensor/
-        `
-    );
+        `Baik`
+        );
+});
+
+bot.onText(/\/Mau apa hari ini?/, (msg) => {
+    global_msg_id = msg.chat.id;
+    bot.sendMessage(
+        global_msg_id,
+        `Melakukan percobaan forum 12.`
+        );
 });
 
 bot.on('message', (msg) => {
@@ -35,32 +40,42 @@ bot.on('message', (msg) => {
 
 
 /* GET users listing. */
-// https://trialcase1.herokuapp.com/api/sensor/
-router.get('/sensor/:sensor1/:sensor2/:sensor3/:sensor4/:sensor5/', (req, res, next) => {
+router.get('/', (req, res, next) => {
+  res.json({
+    "status": 202,
+    "messgae": "Success"
+  });
+});
+
+//https://bebaskan.herokuapp.com/api/sensor/123/150/58
+router.get('/sensor/:sensor1/:sensor2/:sensor3',(req, res, next) => {
   try {
       bot.sendMessage(
             global_msg_id, //msg.id
-            `Pembacaan Data Sensor :\n 
-            Sensor 1 = ${req.params.sensor1}\n
-            Sensor 2 = ${req.params.sensor2}\n
-            Sensor 3 = ${req.params.sensor3}\n
-            Sensor 4 = ${req.params.sensor4}\n 
-            Sensor 5 = ${req.params.sensor5}`
+            `Pembacaan Sensor::${req.params.sensor1},${req.params.sensor2},${req.params.sensor3}`
      );
       res.json({
-        "status": 100,
-        "message": "Success",
+        "status": 202,
+        "messgae": "Success",
         "data": {
-          "sensor_1": parseInt(req.params.sensor1),
-          "sensor_2": parseInt(req.params.sensor2),
-          "sensor_3": parseInt(req.params.sensor3),
-          "sensor_4": parseInt(req.params.sensor4),
-          "sensor_5": parseInt(req.params.sensor5)
+          "sensor_1": req.params.sensor1,
+          "sensor_2": req.params.sensor2,
+          "sensor_3": req.params.sensor3
         }
       });
   } catch (err) {
       next(err);
   }
 });
+
+//https://bebaskan.herokuapp.com/api/test/percobaan-berhasil
+router.get('/test/:key', function(req, res, next){
+    bot.sendMessage(
+            global_msg_id, //msg.id
+            `${req.params.key}`
+    );
+    res.json(req.params.key);
+});
+
 
 module.exports = router;
